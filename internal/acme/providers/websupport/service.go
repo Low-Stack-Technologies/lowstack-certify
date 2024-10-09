@@ -1,4 +1,4 @@
-package cloudflare
+package websupport
 
 import (
 	"certify/internal/acme/providers/provider_utils"
@@ -6,7 +6,7 @@ import (
 	"certify/internal/configuration"
 	"fmt"
 	legoCertificate "github.com/go-acme/lego/v4/certificate"
-	cloudflareChallenge "github.com/go-acme/lego/v4/providers/dns/cloudflare"
+	websupportChallenge "github.com/go-acme/lego/v4/providers/dns/websupport"
 )
 
 type Provider struct{}
@@ -26,12 +26,17 @@ func (p Provider) ObtainCertificate(configuration *configuration.Configuration, 
 		return nil, fmt.Errorf("failed to get ACME client: %w", err)
 	}
 
-	defer provider_utils.UnsetEnvironmentVariable("CLOUDFLARE_DNS_API_TOKEN")
-	if err = provider_utils.SetEnvironmentVariable("CLOUDFLARE_DNS_API_TOKEN", zoneConfiguration, "api_token"); err != nil {
-		return nil, fmt.Errorf("failed to set Cloudflare API token: %w", err)
+	defer provider_utils.UnsetEnvironmentVariable("WEBSUPPORT_API_KEY")
+	if err = provider_utils.SetEnvironmentVariable("WEBSUPPORT_API_KEY", zoneConfiguration, "api_key"); err != nil {
+		return nil, fmt.Errorf("failed to set Websupport API key: %w", err)
 	}
 
-	dnsProvider, err := cloudflareChallenge.NewDNSProvider()
+	defer provider_utils.UnsetEnvironmentVariable("WEBSUPPORT_SECRET")
+	if err = provider_utils.SetEnvironmentVariable("WEBSUPPORT_SECRET", zoneConfiguration, "api_secret"); err != nil {
+		return nil, fmt.Errorf("failed to set Websupport API secret: %w", err)
+	}
+
+	dnsProvider, err := websupportChallenge.NewDNSProvider()
 	if err != nil {
 		return nil, fmt.Errorf("failed to create DNS provider: %w", err)
 	}

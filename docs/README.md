@@ -104,15 +104,19 @@ renewal_days: 15
 # This is the provider that will be used to challenge
 # the certificate.
 #
-# Available providers: cloudflare
+# Available providers: cloudflare, websupport
 provider: cloudflare
 
 # This is the options that will be passed to the
 # provider when requesting a certificate.
 # These options are provider-specific.
 provider_options:
-  # Cloudflare DNS Challenge
+  # Cloudflare
   api_token: YOUR_API_TOKEN # Requires DNS:Edit & ZONE:Read permissions
+  
+  # WebSupport
+  #api_key: YOUR_API_KEY
+  #api_secret: YOUR_API_SECRET
 
 # This is the type of key that will be generated for the
 # certificate.
@@ -144,3 +148,4 @@ file_permissions:
 The following providers are currently supported:
 
 - [Cloudflare](providers/Cloudflare.md)
+- [WebSupport](providers/WebSupport.md)
