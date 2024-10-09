@@ -1,3 +1,6 @@
 .idea/**/*
 .direnv/**/*
 tmp/**/*
+
+config/**/*
+!config/zones/default.yaml

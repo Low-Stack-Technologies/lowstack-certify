@@ -1,0 +1,51 @@
+# This is an example zone configuration file,
+# you can copy this file to zones/<zone>.yaml and edit it.
+
+# This is a unique identifier for the zone.
+#
+# IMPORTANT! This has to be safe to use as a directory
+# name, because it will be used as the directory name
+# for storing the certificates!
+unique_identifier: example.com
+
+# The hostnames that this zone will be responsible for.
+# You can specify multiple hostnames, including wildcard
+# hostnames using *.example.com.
+hostnames:
+  - example.com
+  - www.example.com
+
+# This is the email used when registering with the ACME
+# server. This can be shared between multiple zones.
+#
+# You might get notifications from the ACME server
+# when certificates are about to expire, so it's
+# important to keep this email up to date.
+identity_email: example@example.com
+
+# This is the number of days before the certificate
+# expires on which to renew the certificate.
+#
+# Normally, a new certificate expires every 90 days.
+renewal_days: 15
+
+# This is the provider that will be used to challenge
+# the certificate.
+#
+# Available providers: cloudflare
+provider: cloudflare
+
+# This is the options that will be passed to the
+# provider when requesting a certificate.
+# These options are provider-specific.
+provider_options:
+  # Cloudflare DNS Challenge
+  api_token: YOUR_API_TOKEN # Requires DNS:Edit & ZONE:Read permissions
+
+# This is the type of key that will be generated for the
+# certificate.
+#
+# Available key types: EC256 (P256), EC384 (P384),
+# RSA2048 (2048), RSA3072 (3072), RSA4096 (4096),
+# RSA8192 (8192)
+key_type: 2048
