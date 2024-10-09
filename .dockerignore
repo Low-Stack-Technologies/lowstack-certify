@@ -1,0 +1,14 @@
+.idea/**/*
+.direnv/**/*
+tmp/**/*
+config/**/*
+docs/**/*
+
+.air.toml
+.envrc
+flake.nix
+flake.lock
+.gitignore
+Dockerfile
+LICENSE
+README.md
