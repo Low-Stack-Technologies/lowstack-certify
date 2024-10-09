@@ -104,7 +104,8 @@ renewal_days: 15
 # This is the provider that will be used to challenge
 # the certificate.
 #
-# Available providers: cloudflare, websupport
+# Available providers: cloudflare, websupport &
+# cpanel
 provider: cloudflare
 
 # This is the options that will be passed to the
@@ -113,10 +114,16 @@ provider: cloudflare
 provider_options:
   # Cloudflare
   api_token: YOUR_API_TOKEN # Requires DNS:Edit & ZONE:Read permissions
-  
+
   # WebSupport
   #api_key: YOUR_API_KEY
   #api_secret: YOUR_API_SECRET
+
+  # CPanel / WHM
+  #username: YOUR_USERNAME
+  #token: YOUR_TOKEN
+  #base_url: https://cpanel.example.com
+  #mode: whm # Optional, defaults to cpanel
 
 # This is the type of key that will be generated for the
 # certificate.
@@ -149,3 +156,4 @@ The following providers are currently supported:
 
 - [Cloudflare](providers/Cloudflare.md)
 - [WebSupport](providers/WebSupport.md)
+- [CPanel / WHM](providers/CPanel.md)

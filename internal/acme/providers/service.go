@@ -3,6 +3,7 @@ package providers
 import (
 	"certify/internal/acme/constants/provider_constants"
 	"certify/internal/acme/providers/cloudflare"
+	"certify/internal/acme/providers/cpanel"
 	"certify/internal/acme/providers/websupport"
 	"certify/internal/acme/zone_configuration"
 	"certify/internal/configuration"
@@ -20,6 +21,8 @@ func GetProvider(provider provider_constants.Provider) Provider {
 		return cloudflare.NewProvider()
 	case provider_constants.ProviderWebsupport:
 		return websupport.NewProvider()
+	case provider_constants.ProviderCPanel:
+		return cpanel.NewProvider()
 	default:
 		panic(fmt.Errorf("unknown provider: %s", provider))
 	}
