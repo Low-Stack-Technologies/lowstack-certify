@@ -14,7 +14,7 @@ To get started using Docker Compose you can use the following configuration:
 ```yaml
 services:
   certify:
-    image: lowstack/certify:latest
+    image: ghcr.io/low-stack-technologies/lowstack-certify:latest
     container_name: certify
     user: "1000:1000" # This has to be set to 0:0 if you want to set the file permissions
     volumes:
