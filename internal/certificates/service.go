@@ -12,7 +12,7 @@ import (
 )
 
 func GetExpirationDays(certificateDirectoryPath string) (int, error) {
-	certificatePath := path.Join(certificateDirectoryPath, "cert1.pem")
+	certificatePath := path.Join(certificateDirectoryPath, "fullchain.pem")
 
 	file, err := os.Open(certificatePath)
 	if err != nil {

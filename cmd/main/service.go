@@ -4,6 +4,7 @@ import (
 	"certify/internal/acme"
 	"certify/internal/configuration"
 	"log"
+	"os"
 	"time"
 )
 
@@ -35,4 +36,5 @@ func main() {
 	}
 
 	log.Println("Low-Stack Certify is exiting!")
+	os.Exit(0)
 }
