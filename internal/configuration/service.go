@@ -8,15 +8,30 @@ import (
 	"strings"
 )
 
+type RuntimeConfiguration struct {
+	RunPeriodically bool `yaml:"run_periodically"`
+	PeriodMinutes   int  `yaml:"period_in_minutes"`
+}
+
 type Configuration struct {
-	ZonesPath        string `yaml:"zones_path"`
-	CertificatesPath string `yaml:"certificates_path"`
-	CAURL            string `yaml:"ca_url"`
+	RuntimeConfiguration RuntimeConfiguration `yaml:"runtime"`
+	ZonesPath            string               `yaml:"zones_path"`
+	CertificatesPath     string               `yaml:"certificates_path"`
+	CAURL                string               `yaml:"ca_url"`
 }
 
 const defaultConfiguration = `
 # This is the default configuration file for the Low-Stack Certify application.
 # You can change all values here to customize the application to your needs.
+
+# This is the runtime configuration for the application.
+runtime:
+  # This is whether the application should run periodically or not.
+  # If set to false, the application will only run once and exit.
+  run_periodically: true
+
+  # This is the number of minutes between each run of the application.
+  period_in_minutes: 15
 
 # The path to the directory containing the zone configuration files.
 # This can be a relative or absolute path.
