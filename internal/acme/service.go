@@ -12,10 +12,10 @@ import (
 	"path/filepath"
 )
 
-func HandleZone(config *configuration.Configuration, zone *zone_configuration.ZoneConfiguration) error {
-	log.Printf("Handling zone: %s", zone.UniqueIdentifier)
+func HandleZone(config *configuration.Configuration, zoneConfiguration *zone_configuration.ZoneConfiguration) error {
+	log.Printf("Handling zone: %s", zoneConfiguration.UniqueIdentifier)
 
-	certificateDirectoryPath := path.Join(config.CertificatesPath, zone.UniqueIdentifier)
+	certificateDirectoryPath := path.Join(config.CertificatesPath, zoneConfiguration.UniqueIdentifier)
 	if err := os.MkdirAll(certificateDirectoryPath, 0755); err != nil {
 		return fmt.Errorf("failed to create certificate directory: %w", err)
 	}
@@ -26,20 +26,20 @@ func HandleZone(config *configuration.Configuration, zone *zone_configuration.Zo
 		return fmt.Errorf("failed to get certificate expiration days: %w", err)
 	}
 
-	if certificateExpirationDays > zone.RenewalDays {
-		log.Printf("Certificate expiration is more than %d days from now, skipping", zone.RenewalDays)
+	if certificateExpirationDays > zoneConfiguration.RenewalDays {
+		log.Printf("Certificate expiration is more than %d days from now, skipping", zoneConfiguration.RenewalDays)
 		return nil
 	}
 
-	log.Printf("Certificate expiration is less than %d days from now, renewing", zone.RenewalDays)
+	log.Printf("Certificate expiration is less than %d days from now, renewing", zoneConfiguration.RenewalDays)
 
-	provider := providers.GetProvider(zone.Provider)
-	certificate, err := provider.ObtainCertificate(config, zone)
+	provider := providers.GetProvider(zoneConfiguration.Provider)
+	certificate, err := provider.ObtainCertificate(config, zoneConfiguration)
 	if err != nil {
 		return fmt.Errorf("failed to obtain certificate: %w", err)
 	}
 
-	if err = certificates.SaveCertificate(certificateDirectoryPath, certificate); err != nil {
+	if err = certificates.SaveCertificate(certificateDirectoryPath, certificate, zoneConfiguration); err != nil {
 		return fmt.Errorf("failed to save certificate: %w", err)
 	}
 

@@ -1,6 +1,7 @@
 package certificates
 
 import (
+	"certify/internal/acme/zone_configuration"
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
@@ -45,7 +46,7 @@ func GetExpirationDays(certificateDirectoryPath string) (int, error) {
 	return int(certificate.NotAfter.Sub(time.Now()).Hours() / 24), nil
 }
 
-func SaveCertificate(certificateDirectoryPath string, certificateResource *legoCertificate.Resource) error {
+func SaveCertificate(certificateDirectoryPath string, certificateResource *legoCertificate.Resource, zoneConfiguration *zone_configuration.ZoneConfiguration) error {
 	fullChainPath := path.Join(certificateDirectoryPath, "fullchain.pem")
 	if err := writeFileAndOverrideIfExists(fullChainPath, certificateResource.Certificate); err != nil {
 		return fmt.Errorf("failed to write fullchain.pem: %w", err)
@@ -54,6 +55,31 @@ func SaveCertificate(certificateDirectoryPath string, certificateResource *legoC
 	privateKeyPath := path.Join(certificateDirectoryPath, "privkey.pem")
 	if err := writeFileAndOverrideIfExists(privateKeyPath, certificateResource.PrivateKey); err != nil {
 		return fmt.Errorf("failed to write privkey.pem: %w", err)
+	}
+
+	// If file permissions are not enabled, skip
+	if !zoneConfiguration.FilePermissions.Enabled {
+		return nil
+	}
+
+	if err := updateFilePermissions(fullChainPath, zoneConfiguration.FilePermissions.UID, zoneConfiguration.FilePermissions.GID, zoneConfiguration.FilePermissions.FullChainMode); err != nil {
+		return fmt.Errorf("failed to update fullchain.pem file permissions: %w", err)
+	}
+
+	if err := updateFilePermissions(privateKeyPath, zoneConfiguration.FilePermissions.UID, zoneConfiguration.FilePermissions.GID, zoneConfiguration.FilePermissions.PrivateKeyMode); err != nil {
+		return fmt.Errorf("failed to update privkey.pem file permissions: %w", err)
+	}
+
+	return nil
+}
+
+func updateFilePermissions(path string, uid int, gid int, mode os.FileMode) error {
+	if err := os.Chmod(path, mode); err != nil {
+		return fmt.Errorf("failed to update file permissions: %w", err)
+	}
+
+	if err := os.Chown(path, uid, gid); err != nil {
+		return fmt.Errorf("failed to update file ownership: %w", err)
 	}
 
 	return nil

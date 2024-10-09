@@ -49,3 +49,19 @@ provider_options:
 # RSA2048 (2048), RSA3072 (3072), RSA4096 (4096),
 # RSA8192 (8192)
 key_type: 2048
+
+# This is the file permissions that will be used for the
+# certificate files.
+#
+# If enabled, the certificate files will be updated to
+# match the specified permissions. Otherwise, the
+# certificate files will be left as-is.
+#
+# IMPORTANT! This does require root permissions to
+# update the file permissions!
+file_permissions:
+  enabled: false
+  uid: 0
+  gid: 0
+  private_key_mode: 0600
+  full_chain_mode: 0644

@@ -8,6 +8,14 @@ import (
 	"os"
 )
 
+type FilePermissions struct {
+	Enabled        bool        `yaml:"enabled"`
+	UID            int         `yaml:"uid"`
+	GID            int         `yaml:"gid"`
+	PrivateKeyMode os.FileMode `yaml:"private_key_mode"`
+	FullChainMode  os.FileMode `yaml:"full_chain_mode"`
+}
+
 type ZoneConfiguration struct {
 	UniqueIdentifier string                      `yaml:"unique_identifier"`
 	Hostnames        []string                    `yaml:"hostnames"`
@@ -16,6 +24,7 @@ type ZoneConfiguration struct {
 	Provider         provider_constants.Provider `yaml:"provider"`
 	ProviderOptions  map[string]string           `yaml:"provider_options"`
 	KeyType          certcrypto.KeyType          `yaml:"key_type"`
+	FilePermissions  FilePermissions             `yaml:"file_permissions"`
 }
 
 func ReadZoneConfiguration(path string) (*ZoneConfiguration, error) {
