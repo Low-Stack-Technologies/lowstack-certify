@@ -1,0 +1,50 @@
+name: Linux Binary Release
+
+on:
+  release:
+    types: [ created ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '^1.23.2'
+
+      - name: Build Linux binary for x86_64
+        run: |
+          export GOOS=linux
+          export GOARCH=amd64
+          go build -o certify-x86_64 ./cmd/main
+
+      - name: Build Linux binary for arm64
+        run: |
+          export GOOS=linux
+          export GOARCH=arm64
+          go build -o certify-arm64 ./cmd/main
+
+      - name: Upload Linux binary for x86_64 to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: certify-x86_64
+          asset_name: certify-linux-amd64
+          tag: ${{ github.ref }}
+
+      - name: Upload Linux binary for arm64 to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: certify-arm64
+          asset_name: certify-linux-arm64
+          tag: ${{ github.ref }}
