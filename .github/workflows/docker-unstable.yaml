@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Unstable
 
 on:
   push:
@@ -36,4 +36,4 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: ${{ github.ref == 'refs/heads/main' }}
-          tags: ghcr.io/low-stack-technologies/lowstack-certify:latest
+          tags: ghcr.io/low-stack-technologies/lowstack-certify:unstable
