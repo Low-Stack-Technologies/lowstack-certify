@@ -1,0 +1,33 @@
+name: Pull Request Build Status Check
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '^1.23.2'
+
+      - name: Build Linux binary for x86_64
+        run: |
+          export GOOS=linux
+          export GOARCH=amd64
+          go build -o certify-x86_64 ./cmd/main
+
+      - name: Build Linux binary for arm64
+        run: |
+          export GOOS=linux
+          export GOARCH=arm64
+          go build -o certify-arm64 ./cmd/main
