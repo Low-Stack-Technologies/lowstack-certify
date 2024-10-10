@@ -40,9 +40,3 @@ jobs:
           tags: |
             ghcr.io/low-stack-technologies/lowstack-certify:latest
             ghcr.io/low-stack-technologies/lowstack-certify:${{ github.event.release.tag_name }}
-
-      - name: Attach Docker image to release
-        run: |
-          gh release edit ${{ github.event.release.tag_name }} --notes "Docker image for ghcr.io/low-stack-technologies/lowstack-certify:${{ github.event.release.tag_name }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
